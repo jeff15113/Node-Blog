@@ -6,7 +6,6 @@ const db2 = require("../data/helpers/userDb.js");
 const router = express.Router();
 
 router.post("/", (req, res) => {
-  console.log(req.body);
   const { text, user_id } = req.body;
   if (!text) {
     res.status(400).json({
