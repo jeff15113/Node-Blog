@@ -110,7 +110,7 @@ router.delete("/:id", (req, res) => {
     });
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", allCAPS, (req, res) => {
   const { id } = req.params;
   const { name } = req.body;
   if (!name) {
