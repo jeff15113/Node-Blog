@@ -22,8 +22,8 @@ router.post("/", (req, res) => {
   }
   db2
     .getById(user_id)
-    .then(posts => {
-      if (posts.length === 0) {
+    .then(user => {
+      if (!user) {
         res.status(404).json({
           message: "The user with the specified ID does not exist."
         });
