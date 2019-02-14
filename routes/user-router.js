@@ -1,10 +1,16 @@
 const express = require("express");
 
-const db = require("../data/db.js");
+const db = require("../data/helpers/userDb");
 
 const router = express.Router();
 
-router.post("/", (req, res) => {
+function allCAPS(req, res, next) {
+  const { name } = req.body;
+  req.body.name = name.toUpperCase();
+  next();
+}
+
+router.post("/", allCAPS, (req, res) => {
   const { name } = req.body;
   if (!name) {
     res.status(400).json({
@@ -28,7 +34,7 @@ router.post("/", (req, res) => {
 });
 
 router.get("/", (req, res) => {
-  db.find()
+  db.get()
     .then(users => {
       res.json({ users });
     })
@@ -43,7 +49,7 @@ router.get("/", (req, res) => {
 
 router.get("/:id", (req, res) => {
   const { id } = req.params;
-  db.findById(id)
+  db.getById(id)
     .then(user => {
       if (user.length === 0) {
         res.status(404).json({
@@ -57,6 +63,27 @@ router.get("/:id", (req, res) => {
       console.log(error);
       res.status(500).json({
         error: "User could not be retrived"
+      });
+      return;
+    });
+});
+
+router.get("/posts/:id", (req, res) => {
+  const { id } = req.params;
+  db.getUserPosts(id)
+    .then(user => {
+      if (user.length === 0) {
+        res.status(404).json({
+          message: "That user does not exist."
+        });
+        return;
+      }
+      res.json({ user });
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json({
+        error: "User posts could not be retrived"
       });
       return;
     });
@@ -100,7 +127,7 @@ router.put("/:id", (req, res) => {
         });
         return;
       }
-      db.findById(id)
+      db.getById(id)
         .then(user => {
           if (user.length === 0) {
             res.status(404).json({
