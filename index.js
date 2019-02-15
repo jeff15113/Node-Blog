@@ -11,6 +11,8 @@ server.use(express.json());
 server.use("/api/posts", PostsRouter);
 server.use("/api/users", UserRouter);
 
+var port = process.env.port || 3000;
+
 server.get("/", async (req, res) => {
   res.send(`
     <h2>Blog Posts API</h>
@@ -18,6 +20,6 @@ server.get("/", async (req, res) => {
   `);
 });
 
-server.listen(4000, () => {
+server.listen(port, () => {
   console.log("\n* Server Running on http://localhost:4000 *\n");
 });
