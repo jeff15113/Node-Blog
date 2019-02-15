@@ -11,7 +11,7 @@ server.use(express.json());
 server.use("/api/posts", PostsRouter);
 server.use("/api/users", UserRouter);
 
-var port = process.env.port || 3000;
+var port = process.env.PORT || 4000;
 
 server.get("/", async (req, res) => {
   res.send(`
